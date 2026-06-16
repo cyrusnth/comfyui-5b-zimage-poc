@@ -6,9 +6,10 @@ FROM runpod/worker-comfyui:5.8.4-base
 ARG HF_TOKEN=""
 
 # 1. Download VAE (Target: models/vae)
+# Download VAE from Comfy-Org mirror (No HF Token required)
 RUN BACKOFFS="10 20 30 60 90" && for i in 1 2 3 4 5; do \
-    HF_TOKEN=$HF_TOKEN comfy model download \
-    --url 'https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/ae.safetensors' \
+    comfy model download \
+    --url 'https://huggingface.co/lovis93/testllm/resolve/ed9cf1af7465cebca4649157f118e331cf2a084f/ae.safetensors' \
     --relative-path models/vae \
     --filename 'ae.safetensors' && break; \
     if [ $i -eq 5 ]; then echo "model-download failed after 5 attempts" >&2; exit 1; fi; \
